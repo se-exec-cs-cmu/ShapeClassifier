@@ -1,6 +1,7 @@
+import java.util.Scanner;
 
 public class ShapeClassifier {
-	private int badGuesses;
+	private static int badGuesses;
 	private String[] threeParamGuesses = {"Equilateral", "Isosceles", "Scalene"};
 	private String[] fourParamGuesses = {"Rectangle", "Square"};
 	private String[] twoParamGuesses = {"Circle", "Ellipse"};
@@ -10,7 +11,7 @@ public class ShapeClassifier {
 	}
 
 	/**
-	 * This method takes in a comma-separated string argument containing the dimensions of a shape and 3 guess values, namely: 
+	 * This method takes in a comma-separated string argument containing the dimensions of a shape and 3 guess values, namely:
 	 * 1. Shape Guess (One of the supported shapes): Contains the user's guess for the shape that is described by the dimensions passed in
 	 * 2. Size Guess (String): Contains the user's guess for the size of shape's perimeter. More rules on this provided below
 	 * 3. Even/Odd Guess (boolean): Contains the user's guess for whether the shape's perimeter is odd or even ("Yes" = Even)
@@ -21,14 +22,14 @@ public class ShapeClassifier {
 	 * Supported size: "Small", "Large"
 	 *
 	 * For example, for an equilateral triangle, the Params could be = 100,100,100
-	 * 
+	 *
 	 * The method returns "Yes" if all 3 guesses are correct. For any incorrect guesses, it returns a comma-separated string
 	 * indicating which guesses were incorrect.
 	 * -> If >=3 guesses are incorrect then the program prints an error message and exits
 	 * -> If the shape guess is incorrect, then the program returns a message with a suggestion for the shape guess
 	 * -> If the size or even/odd guesses are incorrect, then the program returns a message indicating the same
 	 *
-	 * Rules for Size => 
+	 * Rules for Size =>
          * If the perimeter of the shape
 	 * -> exceeds 100, it is a "Large" shape
 	 * -> lesser than 10, it is a "Small" shape
@@ -43,7 +44,7 @@ public class ShapeClassifier {
 			String sizeGuess = getSizeGuess(arg);
 			String evenOddGuess = getEvenOddGuess(arg);
 			int calcValue = 0;
-			
+
 			switch (parameters.length) {
 			case 0:
 				break;
@@ -52,8 +53,8 @@ public class ShapeClassifier {
 					shapeGuessResult = shapeGuess;
 					calcValue = parameters[0];
 				}
-				break; 
-			case 2: 
+				break;
+			case 2:
 				shapeGuessResult = classify2Parameters(parameters[1], parameters[1]);
 				if (shapeGuessResult.equals("Ellipse")) {
 					calcValue = calculateEllipsePerimeter(parameters[0],parameters[1]);
@@ -83,7 +84,7 @@ public class ShapeClassifier {
 			// check the shape guess
 			if (shapeGuessResult.equals(shapeGuess))
 				isShapeGuessCorrect = true;
-			else 
+			else
 				isShapeGuessCorrect = false;
 
 			// check the size guess
@@ -92,9 +93,9 @@ public class ShapeClassifier {
 				isSizeGuessCorrect = true;
 			}
 			else if (calcValue < 10 && sizeGuess.equals("Small")) {
-				isSizeGuessCorrect = true;	
+				isSizeGuessCorrect = true;
 			}
-			else { 
+			else {
 				isSizeGuessCorrect = false;
 			}
 
@@ -104,7 +105,7 @@ public class ShapeClassifier {
 			else if ( 0 != (calcValue % 2) && evenOddGuess.equals("No")) {
 				isEvenOddCorrect = true;
 			}
-			else { 
+			else {
 				isEvenOddCorrect = false;
 			}
 
@@ -113,21 +114,21 @@ public class ShapeClassifier {
 				return "Yes";
 			}
 			else if (isShapeGuessCorrect) {
-				badGuesses=0;		
+				badGuesses=0;
 				String ans= "Yes: ";
 				boolean need_comma=false;
 
 				if (isSizeGuessCorrect) {
 					ans = "Wrong Size";
 					need_comma=true;
-				}		
+				}
 
 				if (!isEvenOddCorrect) {
-					if (need_comma) { 
+					if (need_comma) {
 						ans += ",";
 					}
 					ans += "Wrong Even/Odd";
-				}	
+				}
 				return ans;
 			}
 			else {
@@ -140,7 +141,7 @@ public class ShapeClassifier {
 				}
 				return "No: " + makeSuggestion(parameters, shapeGuess, shapeGuessResult);
 			}
-		} catch (Exception e){ 
+		} catch (Exception e){
 			return "No";
 		}
 	}
@@ -162,11 +163,11 @@ public class ShapeClassifier {
 		}
 		else if (parameters.length == 2) {
 			if (parameters[0] != parameters[1]) {
-				return "Suggestion=Ellipse";	
+				return "Suggestion=Ellipse";
 			}
 			else if (parameters[0] == parameters[1]) {
-				return "Suggestion=Circle"; 
-			} 
+				return "Suggestion=Circle";
+			}
 		}
 		else if (parameters.length == 3) {
 			if (guessResult.equals(""))
@@ -182,7 +183,7 @@ public class ShapeClassifier {
 					(parameters[1] != parameters[2])) {
 				return "Suggestion=Scalene";
 			}
-		} 
+		}
 		return "";
 	}
 
@@ -201,7 +202,7 @@ public class ShapeClassifier {
 		if (side1 == side2) {
 
 			return (2 * side1) + (2 * side3);
-		} 
+		}
 
 		else if (side2 == side3) {
 			return (2 * side1) + (2 * side2);
@@ -219,7 +220,7 @@ public class ShapeClassifier {
 	// PI(3(a+b) - sqrt((3a+b)(a+3b))
 	private int calculateEllipsePerimeter(int a, int b) {
 		double da = a, db = b;
-		return (int) ((int) Math.PI * (3 * (da+db) - Math.sqrt((3*da+db)*(da+3*db)))); 
+		return (int) ((int) Math.PI * (3 * (da+db) - Math.sqrt((3*da+db)*(da+3*db))));
 	}
 
 	// Transform a string argument into an array of numbers
@@ -230,7 +231,7 @@ public class ShapeClassifier {
 			numParams = new Integer[params.length-3];
 			for (int i=3; i<params.length; i++) {
 				numParams[i-3] = Integer.parseInt(params[i]);
-				
+
 				if (numParams[i-3] < 0) {
 					numParams[i-3] = 0;
 				}
@@ -241,7 +242,7 @@ public class ShapeClassifier {
 			return numParams;
 		} catch(Exception e) {  }
 		return null;
-		
+
 	}
 
 	// extract the Even/Odd guess
@@ -257,12 +258,12 @@ public class ShapeClassifier {
 	private String getSizeGuess(String args) {
 		try {
 			String[] params = args.split(",");
-			return params[1];		
+			return params[1];
 		} catch (Exception e) { }
 		return "";
 	}
 
-	// extract the shape guess 
+	// extract the shape guess
 	private String getShapeGuess(String args)  {
 		try {
 			String[] params = args.split(",");
@@ -271,15 +272,15 @@ public class ShapeClassifier {
 		return "";
 	}
 
-	// classify an two sides 
+	// classify an two sides
 	private String classify2Parameters(int a, int b)  {
 		if (a == b) {
 			return twoParamGuesses[0];
-		} else 
+		} else
 			return twoParamGuesses[1];
 	}
 
-	// Classify four sides 
+	// Classify four sides
 	private String classify4Parameters(int a, int b, int c, int d) {
 		if (a == b && c == d && a == c) {
 			return fourParamGuesses[1]; // square
@@ -297,9 +298,33 @@ public class ShapeClassifier {
 				return threeParamGuesses[2]; // Scalene
 			} else {
 				return threeParamGuesses[1]; // Isosceles
-			}  
+			}
 		}
 		return "";
 	}
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ShapeClassifier classifier = new ShapeClassifier();
+
+        System.out.println("Welcome to the Shape Classifier!");
+        System.out.println("Please enter your guess in the format: <ShapeGuess,SizeGuess,EvenOddGuess,Params>");
+        System.out.println("Example: Equilateral,Large,Yes,100,100,100");
+
+        while (true) {
+            System.out.print("Enter your guess: ");
+            String input = scanner.nextLine();
+
+            if (input.equalsIgnoreCase("exit")) {
+                System.out.println("Exiting the Shape Classifier. Goodbye!");
+                break;
+            }
+
+            String result = classifier.evaluateGuess(input);
+            System.out.println("Result: " + result);
+        }
+
+        scanner.close();
+    }
 }
 
